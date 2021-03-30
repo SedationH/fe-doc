@@ -13,6 +13,18 @@ CSRF 就是 利用用户登录态发起的恶意请求
 - a.com以受害者的名义执行了act=xx
 - 攻击完成，攻击者在受害者不知情的情况下，冒充受害者，让a.com执行了自己定义的操作
 
+
+
+例子
+
+例如，SanShao可能正在浏览其他用户XiaoMing发布消息的聊天论坛。假设XiaoMing制作了一个引用ShanShao银行网站的HTML图像元素，例如，
+
+```html
+<img  src = "http://www.bank.com/withdraw?user=SanShao&amount=999999&for=XiaoMing" >
+```
+
+如果SanShao的银行将其认证信息保存在cookie中，并且cookie尚未过期，(当然是没有其他验证身份的东西)，那么SanShao的浏览器尝试加载该图片将使用他的cookie提交提款表单，从而在未经SanShao批准的情况下授权交易。
+
 ## 如何预防
 
 CSRF的两个特点：
