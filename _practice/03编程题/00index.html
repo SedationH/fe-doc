@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      ;(function () {
+        function trim(string) {
+          // return string.replace(/^\s+|\s+$/gm\, '')
+          return string.replace(/^\s+|\s+$/g, '')
+        }
+
+        console.log(
+          trim(
+            `  dasd   asd
+          aasd  sad`
+          )
+        )
+
+        console.log(
+          `  dasd   asd
+          aasd  sad`.trim()
+        )
+      })
+      ;(function () {
+        // const newObj = JSON.parse(JSON.stringify(obj))\
+        let obj = {
+          field1: 1,
+          field2: undefined,
+          field3: {
+            child: 'child',
+          },
+          field4: [2, 4, 8],
+        }
+        function clone1(obj) {
+          if (typeof obj === 'object') {
+            const cloneObj = Array.isArray(obj) ? [] : {}
+            for (const key in obj) {
+              cloneObj[key] = clone1(obj[key])
+            }
+            return cloneObj
+          } else {
+            return obj
+          }
+        }
+        // console.log(clone1(obj))
+        // 处理循环引用的情况
+        obj = {
+          field1: 1,
+          field2: undefined,
+          field3: {
+            child: 'child',
+          },
+          field4: [2, 4, 8],
+        }
+        obj.obj = obj
+        console.log(clone1(obj))
+        // 00index.html:39 Uncaught RangeError: Maximum call stack size exceeded
+        // at clone1 (00index.html:39)
+        // at clone1 (00index.html:43)
+        // at clone1 (00index.html:43)
+        // at clone1 (00index.html:43)
+        // at clone1 (00index.html:43)
+        // at clone1 (00index.html:43)
+        // at clone1 (00index.html:43)
+        // at clone1 (00index.html:43)
+        // at clone1 (00index.html:43)
+        // at clone1 (00index.html:43)
+        function clone3
+      })()
+    </script>
+  </body>
+</html>
