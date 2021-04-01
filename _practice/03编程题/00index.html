@@ -5,9 +5,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      html,
+      body {
+        height: 100vh;
+      }
+
+      .cnt {
+        background-color: pink;
+        color: blue;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 300px;
+        width: 300px;
+      }
+    </style>
   </head>
   <body>
+    <div class="cnt"></div>
     <script>
+      const $body = document.querySelector('body')
+      const $cnt = document.querySelector('.cnt')
+      let cnt = 0
+      function handleBodyMouseMove() {
+        $cnt.textContent = ++cnt
+        console.log(arguments)
+      }
+    </script>
+    <script>
+      //trim
       ;(function () {
         function trim(string) {
           // return string.replace(/^\s+|\s+$/gm\, '')
@@ -26,6 +53,7 @@
           aasd  sad`.trim()
         )
       })
+      // deepClone
       ;(function () {
         // const newObj = JSON.parse(JSON.stringify(obj))\
         let obj = {
@@ -58,7 +86,7 @@
           field4: [2, 4, 8],
         }
         obj.obj = obj
-        console.log(clone1(obj))
+        // console.log(clone1(obj))
         // 00index.html:39 Uncaught RangeError: Maximum call stack size exceeded
         // at clone1 (00index.html:39)
         // at clone1 (00index.html:43)
@@ -70,7 +98,333 @@
         // at clone1 (00index.html:43)
         // at clone1 (00index.html:43)
         // at clone1 (00index.html:43)
-        function clone3
+        function clone2(obj, map = new Map()) {
+          if (obj && typeof obj === 'object') {
+            const cloneObj = Array.isArray(obj) ? [] : {}
+            if (map.get(obj)) {
+              return obj
+            }
+            map.set(obj, cloneObj)
+            for (const key in obj) {
+              cloneObj[key] = clone2(obj[key], map)
+            }
+
+            return cloneObj
+          } else {
+            return obj
+          }
+        }
+        console.log(clone2(obj))
+      })
+      // curry
+      ;(function () {
+        function curry(fn) {
+          const len = fn.length
+          return function curriedFn(...args) {
+            if (args.length < len) {
+              return (...innerArgs) => curriedAdd(...[...args, ...innerArgs])
+            }
+            return fn(...args)
+          }
+        }
+        function add(a, b, c) {
+          console.log(a + b + c)
+        }
+        const curriedAdd = curry(add)
+        curriedAdd(1)(2, 3)
+        curriedAdd(1, 2, 3)
+        curriedAdd(1)(2)(3)
+      })
+      // 大数相加
+      ;(function () {
+        /**
+         * @param {string} num1
+         * @param {string} num2
+         * @return {string}
+         */
+        var addStrings = function (num1, num2) {
+          const maxLen = Math.max(num1.length, num2.length)
+          // 补0
+          while (num1.length < maxLen) {
+            num1 = 0 + num1
+          }
+          while (num2.length < maxLen) {
+            num2 = 0 + num2
+          }
+          let carry = 0
+          let ans = ''
+          for (let i = maxLen - 1; i >= 0; i--) {
+            const sum = +num1[i] + +num2[i] + carry
+            const curr = sum % 10
+            carry = Math.floor(sum / 10)
+            ans = curr + ans
+          }
+          if (carry) {
+            ans = carry + ans
+          }
+          return ans
+        }
+        console.log(addStrings('11', '123'))
+
+        /**
+         * Definition for singly-linked list.
+         * function ListNode(val, next) {
+         *     this.val = (val===undefined ? 0 : val)
+         *     this.next = (next===undefined ? null : next)
+         * }
+         */
+        /**
+         * @param {ListNode} l1
+         * @param {ListNode} l2
+         * @return {ListNode}
+         */
+        var addTwoNumbers = function (l1, l2) {
+          // dummyNode
+          const dummyNode = new ListNode(-1)
+          let p = dummyNode
+          let carry
+          while (l1 || l2) {
+            // 不确定val的类型
+            const val1 = l1 ? +l1.val : 0
+            const val2 = l2 ? +l2.val : 0
+            const sum = val1 + val2 + carry
+            const currVal = sum % 10
+            carry = Math.floor(sum / 10)
+            p.next = new ListNode(currVal)
+            p = p.next
+
+            l1 && (l1 = l1.next)
+            l2 && (l2 = l2.next)
+          }
+          carry && (curr.next = new ListNode(carry))
+          return dummyNode.next
+        }
+      })
+      // flat
+      ;(function () {
+        const arr = [
+          1,
+          2,
+          3,
+          4,
+          [1, 2, 3, [1, 2, 3, [1, 2, 3]]],
+          5,
+          'string',
+          { name: '弹铁蛋同学' },
+        ]
+        const m = [1, [2, [3]]]
+        /**
+         * 解决几个问题
+         *  如何遍历数组
+         *  如何判断数组
+         *  如何展开一层数组
+         */
+        function flat(arr) {
+          let flatedArr = []
+          arr.forEach(item => {
+            if (Array.isArray(item)) {
+              flatedArr = flatedArr.concat(flat(item))
+            } else {
+              flatedArr.push(item)
+            }
+          })
+          return flatedArr
+        }
+        // console.log(flat(arr))
+
+        /**
+         * @param {Array} arr
+         */
+        function flat2(arr) {
+          return arr.reduce((prev, curr) => {
+            return prev.concat(Array.isArray(curr) ? flat2(curr) : curr)
+          }, [])
+        }
+
+        // console.log(flat2(arr))
+
+        // 展开就意味着可能要扩大数组的长度
+        // 在数组末尾进行添加能够不影响别的数字的位置
+        function flat3(arr) {
+          const flatedArr = []
+          const temp = [].concat(arr)
+          while (temp.length) {
+            const val = temp.pop()
+            if (Array.isArray(val)) {
+              // 进行展开
+              temp.push(...val)
+            } else {
+              flatedArr.unshift(val)
+            }
+          }
+          return flatedArr
+        }
+
+        // console.log(flat3(arr))
+
+        // 控制拉平层数
+        function flat4(arr, depth = 1) {
+          return depth > 0
+            ? arr.reduce((prev, curr) => {
+                return prev.concat(
+                  Array.isArray(curr) ? flat4(curr, depth - 1) : curr
+                )
+              }, [])
+            : arr
+        }
+
+        // console.log(flat4(arr, 9))
+
+        // 使用Generator
+        function* flat5(arr, depth = 1) {
+          for (const item of arr) {
+            if (Array.isArray(item) && depth > 0) {
+              yield* flat5(item, depth - 1)
+            } else {
+              yield item
+            }
+          }
+        }
+        // console.log([...flat5(arr, 3)])
+
+        // 放在原型链上
+        Array.prototype.myFlat = function (depth) {
+          return depth > 0
+            ? this.reduce((prev, curr) => {
+                return prev.concat(
+                  Array.isArray(curr) ? curr.myFlat(depth - 1) : curr
+                )
+              }, [])
+            : this
+        }
+        console.log(arr.myFlat(Infinity))
+      })
+      // debounce
+      ;(function () {
+        // $body.addEventListener('mousemove', handleBodyMouseMove)
+        function debounce(fn, wait, immediate) {
+          let timer
+
+          // 返回一个函数, 用的时候是调用这个返回的函数
+          return function debouncedFn(...args) {
+            if (timer) {
+              clearTimeout(timer)
+            }
+
+            timer = setTimeout(() => {
+              fn.apply(this, args)
+            }, wait)
+          }
+        }
+        // $body.addEventListener('mousemove', debounce(handleBodyMouseMove, 1000))
+
+        function debounce2(fn, wait, immediate) {
+          let timer
+          return function debouncedFn(...args) {
+            if (timer) {
+              clearTimeout(timer)
+            }
+
+            if (immediate) {
+              if (!timer) {
+                fn.apply(this.args)
+              }
+              timer = setTimeout(() => {
+                timer = undefined
+              }, wait)
+            } else {
+              timer = setTimeout(() => {
+                fn.apply(this, args)
+              }, wait)
+            }
+          }
+
+          debouncedFn.cancel = function () {
+            clearTimeout(timer)
+            timer = undefined
+          }
+        }
+        $body.addEventListener(
+          'mousemove',
+          debounce2(handleBodyMouseMove, 100, true)
+        )
+      })
+      // throttle
+      ;(function () {
+        function throttle1(fn, wait) {
+          // 设计开始就执行
+          let previous = -Infinity
+          return function throttledFn(...args) {
+            let now = new Date()
+            // [0,249]
+            if (now - previous > wait - 1) {
+              fn.apply(this, args)
+              previous = new Date()
+            }
+          }
+        }
+
+        $body.addEventListener(
+          'mousemove',
+          throttle1(handleBodyMouseMove, 1000)
+        )
+        function throttle2(fn, wait) {
+          let timer
+          return function throttledFn(...args) {
+            if (!timer) {
+              timer = setTimeout(() => {
+                fn.apply(this, args)
+                timer = undefined
+              }, wait)
+            }
+          }
+        }
+        // $body.addEventListener(
+        //   'mousemove',
+        //   throttle2(handleBodyMouseMove, 1000)
+        // )
+      })
+      // 去重
+      ;(function () {
+        // 要考虑的问题
+        // 如何判断是重复的？ 简单来说 === 就完事了
+        // 1. 两层for
+        const arr = [1, 2, 3, {}, [], {}, [], undefined, undefined, NaN, NaN]
+        function unique1(arr) {
+          const len = arr.length
+          const ans = []
+          for (let i = 0; i < len; i++) {
+            let flag = false
+            for (let j = i + 1; j < len; j++) {
+              if (arr[i] === arr[j]) {
+                flag = true
+                break
+              }
+            }
+            if (!flag) ans.push(arr[i])
+          }
+          return ans
+        }
+
+        console.log(unique1(arr)) // 仅仅依赖 === 来判断并不可靠
+
+        // 但不同的需求下
+        // “1” && 1是重复的吗？
+        // {} {} 是重复的吗？
+        // toString的时候 [] => ""  {} => [object Object] 有各自实现的toString 方法
+        function unique2(arr) {
+          // return Array.from(new Set(arr))
+          return [...new Set(arr)]
+        }
+
+        function unique3(arr) {
+          const map = {}
+          arr.filter(item =>
+            map.hasOwnProperty(item) ? false : (map[item] = true)
+          )
+          return map
+        }
+        // console.log(unique2(arr))
       })()
     </script>
   </body>
