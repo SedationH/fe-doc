@@ -1,0 +1,19 @@
+<script>
+  function obj(name) {
+    console.log(this)
+    if (this instanceof obj) {
+      if (name) {
+        this.name = name
+      }
+    } else {
+      return {
+        name,
+      }
+    }
+  }
+  obj.prototype.name = 'name2'
+  var a = obj('name1')
+  var b = new obj()
+
+  console.log(a.name == 'name1', b.name == 'name2')
+</script>

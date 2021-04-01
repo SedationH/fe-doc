@@ -1,0 +1,24 @@
+<script>
+  function getNthFibonacci(count) {
+    if (count < 0 || !Number.isInteger(count)) {
+      throw Error('输入错误')
+    }
+    if (count === 0 || count === 1) {
+      return 1
+    }
+    return getNthFibonacci(count - 1) + getNthFibonacci(count - 2)
+  }
+
+  function getNthFibonacci(count) {
+    console.log('hi')
+    let a = 1,
+      b = 1
+    for (let i = 2; i <= count; i++) {
+      const sum = a + b
+      a = b
+      b = sum
+    }
+    return b
+  }
+  console.log(getNthFibonacci(4))
+</script>

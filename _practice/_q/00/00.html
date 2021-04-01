@@ -1,0 +1,55 @@
+<header>
+  <div class="logo">logo</div>
+  <div class="username">username</div>
+</header>
+<main>
+  <div class="content">content</div>
+  <aside>aside</aside>
+</main>
+<footer>footer</footer>
+
+<style>
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  header {
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border: 1px solid green;
+    padding: 10px;
+  }
+
+  .logo {
+    height: 100px;
+    width: 100px;
+    background-color: pink;
+  }
+
+  .username {
+    width: 200px;
+    border: 1px solid black;
+    text-align: end;
+  }
+
+  main {
+    margin: 10px;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .content {
+    flex: 1;
+    border: 1px solid purple;
+    min-height: 400px;
+  }
+
+  aside {
+    flex-basis: 200px;
+    border: 1px solid red;
+    margin-left: 10px;
+  }
+</style>
