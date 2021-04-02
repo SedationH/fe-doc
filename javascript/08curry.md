@@ -102,6 +102,5 @@ console.log(
   curriedAdd(1)(2, 3),
   curriedAdd(1, 2, 3)
 )
-
 ```
 

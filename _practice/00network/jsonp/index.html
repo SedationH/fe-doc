@@ -1,0 +1,12 @@
+<body>
+  <script src="./promise-jsonp.js"></script>
+  <script>
+    jsonp('http://localhost:8001/jsonp', 'fooFn', { a: 1, b: 'heiheihei' })
+      .then(result => {
+        console.log(result)
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  </script>
+</body>
