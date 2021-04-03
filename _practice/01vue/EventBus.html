@@ -1,0 +1,61 @@
+<script>
+  class EventEmeitter {
+    constructor() {
+      this._event = new Map()
+    }
+
+    addListener(type, fn) {
+      let fnArr = this._event.get(type)
+      if (fnArr) {
+        fnArr.push(fn)
+      } else {
+        fnArr = [fn]
+      }
+      this._event.set(type, fnArr)
+    }
+
+    emit(type, ...args) {
+      const fnArr = this._event.get(type)
+      if (fnArr) {
+        // 利用emit所在的上下文进行处理
+        for (const fn of fnArr) {
+          fn.apply(this, args)
+        }
+      } else {
+        throw Error('没有处理函数')
+      }
+    }
+
+    removeHandler(type, fn) {
+      const fnArr = this._event.get(type)
+      if (fnArr) {
+        let flag = false
+        for (let i = 0; i < fnArr.length; i++) {
+          if (fnArr[i] === fn) {
+            fnArr.splice(i, 1)
+            flag = true
+          }
+        }
+        if (!flag) throw Error('没有相关函数')
+      } else {
+        throw Error('没有相关函数')
+      }
+    }
+  }
+
+  const eventBus = new EventEmeitter()
+
+  eventBus.addListener('foo', (data, data2) => {
+    console.log('foo log', data, data2)
+  })
+  const foo2 = (data, data2) => {
+    console.log('foo log2', data, data2)
+  }
+  eventBus.addListener('foo', foo2)
+
+  eventBus.removeHandler('foo', foo2)
+
+  eventBus.emit('foo', 'args1', 'args2')
+
+  // 现在只能添加一个处理函数
+</script>

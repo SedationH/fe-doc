@@ -1,0 +1,31 @@
+<style>
+  body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  div {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #0ff;
+    animation-name: modal;
+    animation-duration: 2s;
+  }
+
+  @keyframes modal {
+    0% {
+      transform: translateY(50vh);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+</style>
+
+<div></div>

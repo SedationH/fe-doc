@@ -1,0 +1,107 @@
+<style>
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: yellow;
+  }
+
+  .modal {
+    background-color: skyblue;
+    width: 600px;
+    height: 400px;
+
+    position: fixed;
+    z-index: 10000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    max-width: 95%;
+    max-height: 95%;
+
+    animation-name: modal;
+    animation-duration: 2s;
+  }
+
+  .modal .header {
+    height: 50px;
+    line-height: 50px;
+  }
+
+  .header .close {
+    float: right;
+    margin-right: 20px;
+    font-size: 30px;
+  }
+
+  .modal-guts {
+    padding: 20px 50px;
+    font-size: 40px;
+    height: calc(100% - 50px);
+    overflow: auto;
+  }
+
+  .modal-overlay {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: gray;
+  }
+
+  .closed {
+    display: none;
+  }
+
+  @keyframes modal {
+    0% {
+      transform: translate(-50%, 50vh);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translate(-50%, -50%);
+      opacity: 1;
+    }
+  }
+</style>
+<body>
+  <button id="open">Open</button>
+  <div class="modal" id="modal">
+    <div class="header">
+      <span style="font-size: 44px">things that don't scroll</span>
+      <button class="close" id="close">X</button>
+    </div>
+    <div class="modal-guts">
+      <!-- things that scroll -->
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae
+      expedia corrupti laudantium aperiam, doloremque explicabo ipsum earum
+      dicta saepe delectus totam vitae ipsam doloribus et obcaecati facilis eius
+      assumenda cumaue
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal-overlay"></div>
+  <script>
+    const $ = selector => document.querySelector(selector)
+    const $modal = $('#modal')
+    const $modalOverlay = $('#modal-overlay')
+    const $closeBtn = $('#close')
+    const $openBtn = $('#open')
+
+    $closeBtn.addEventListener('click', () => {
+      $modal.classList.toggle('closed')
+      $modalOverlay.classList.toggle('closed')
+    })
+    $openBtn.addEventListener('click', () => {
+      $modal.classList.toggle('closed')
+      $modalOverlay.classList.toggle('closed')
+    })
+  </script>
+</body>
