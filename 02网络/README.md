@@ -37,6 +37,8 @@ User Datagram Protocol
 
 ## HTTP是啥
 
+Hypertext Transfer Protocal
+
 一个应用层协议，用来传输hypermedia documents, such as HTML. 
 
 It was designed for communication between web browsers and web servers, but it can also be used for other purposes.
@@ -98,6 +100,9 @@ S 专注于处理数据
 - 通用部首
   - Cache-Control 控制缓存 ✨
   - Connection 连接管理、逐条首部 ✨
+  - Content-Type 表示资源类型
+    - PUT or POST 告诉服务器发送的数据类型
+    - GET ... 告诉客户端服务器返回的内容
 - 请求部首
   - Accept 客户端或者代理能够处理的媒体类型 ✨
   - Host 请求资源所在服务器 ✨
@@ -162,4 +167,16 @@ TODO
   - 通过查看HTTP/2请求与HTTP/1.x请求的瀑布流可以发现，HTTP/1.x连接存在严重的头阻塞问题，每个时刻最多只可能有6条请求在6条连接上执行，而HTTP/2采用多条请求复用一个连接的机制，同一时刻可以接收到的请求数不受连接数的限制，能更加充分地利用网络带宽。
 
 
+
+
+
+## Connection management in HTTP/1.x
+
+Three
+
+1. short-lived connections
+2. persistent connections
+3. HTTP pipline 但没用... [参看](https://developer.mozilla.org/en-US/docs/Web/HTTP/Connection_management_in_HTTP_1.x#http_pipelining)  *multiplexing*, that is used by HTTP/2.
+
+![Compares the performance of the three HTTP/1.x connection models: short-lived connections, persistent connections, and HTTP pipelining.](http://picbed.sedationh.cn/http1_x_connections.png)
 

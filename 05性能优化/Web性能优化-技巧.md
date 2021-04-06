@@ -2,6 +2,177 @@
 
 
 
+下面主要处理的是加载时候的性能，部分涉及到网页整体优化（相关联的其他页面）
+
+注意⚠️ 不仅是在考虑最开始的文档请求，还有文档相关联的其他资源的请求
+
+文章是一份地图，有些具体内容不进行展开
+
+
+
+## DNS
+
+请求第一步，往往是DNS
+
+考虑预解析 DNS prefetching cross origin 才有意义
+
+```html
+<link rel="dns-prefetch" href="https://fonts.gstatic.com/" >
+```
+
+[最佳实践参看](https://developer.mozilla.org/en-US/docs/Web/Performance/dns-prefetch#examples)
+
+
+
+提一嘴域名劫持的解决方案
+
+> 移动解析（HTTPDNS）基于HTTP协议向腾讯云的DNS服务器发送域名解析请求，替代了基于DNS协议向运营商Local DNS发起解析请求的传统方式，可以避免Local DNS造成的域名劫持和跨网访问问题，解决移动互联网服务中域名解析异常带来的困扰。
+
+
+
+感觉CDN(Content Delivery Network)应该属于这里 DNS解析的时候找到就是最近的再加一波负载均衡
+
+[参考](https://juejin.cn/post/6844903604596244493)
+
+[参考](https://zhuanlan.zhihu.com/p/29468624)
+
+这里缺乏实践经验 不好理解 日后再补充 TODO
+
+## TCP
+
+在查询DNS的时候提到了preconected
+
+```html
+<!-- 注意顺序, precontent和dns-prefetch的兼容性 -->
+<link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin>
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+```
+
+
+
+下面都是服务端的优化操作
+
+HTTP/1.0 无法优化...
+
+HTTP/1.x 通过
+
+响应报文～
+
+```
+  HTTP/1.1 200 OK
++ Connection: Keep-Alive
+  Content-Encoding: gzip
+  Content-Type: text/html; charset=utf-8
+  Date: Thu, 11 Aug 2016 15:23:13 GMT
++ Keep-Alive: timeout=5, max=1000
+  Last-Modified: Mon, 25 Jul 2016 04:32:39 GMT
+  Server: Apache
+
+  (body)
+```
+
+![Compares the performance of the three HTTP/1.x connection models: short-lived connections, persistent connections, and HTTP pipelining.](http://picbed.sedationh.cn/http1_x_connections-20210405164049718.png)
+
+实现效果就是中间那样，对于同一域名，不用重复建立TCP了，但没法像第三幅图那样并行～
+
+[第三幅的pipeline 因为种种原因并没有实际使用](https://developer.mozilla.org/en-US/docs/Web/HTTP/Connection_management_in_HTTP_1.x#http_pipelining)
+
+想要并发只能建立多个TCP
+
+但浏览器对同一域名的TCP数量有数量限制 6 - 8
+
+HTTP2多路复用
+
+**HTTP/2** is a major revision of the [HTTP network protocol](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP). The primary goals for HTTP/2 are to reduce [latency](https://developer.mozilla.org/en-US/docs/Glossary/Latency) by enabling full request and response multiplexing, minimize protocol overhead via efficient compression of HTTP header fields, and add support for request prioritization and server push.
+
+这就可以实现对在一个tcp下的请求并发了（某些场景性能并不一定好于http1.x）
+
+
+
+## HTTP
+
+[一篇有趣的文章](https://mp.weixin.qq.com/s/7Bp8Q9ySIXpnaBfO4jk6Vw)
+
+[参考 HTTP协议的优化](https://juejin.cn/post/6844904064531038216)
+
+这里主要是利用协议来更好的处理传输
+
+### [Compression](https://developer.mozilla.org/en-US/docs/Web/HTTP/Compression) && 编码
+
+HTTP1.1
+
+1. 使用chunked让客户端更快的接收到响应
+
+```http
+  HTTP/1.1 200 OK
+  Content-Type: text/plain
++ Transfer-Encoding: chunked
+
+  25
+  This is the data in the first chunk
+
+  1C
+  and this is the second one
+
+  3
+  con
+
+  8
+  sequence
+
+  0
+```
+
+2. [End-to-end compression](https://developer.mozilla.org/en-US/docs/Web/HTTP/Compression#end-to-end_compression)
+
+![img](http://picbed.sedationh.cn/httpcompression1.png)
+
+
+
+HTTP2 二进制协议
+
+3. 头部压缩
+
+### 缓存 
+
+强缓存
+
+```http
+Expires: Wed, 11 May 2018 07:20:00 GMT
+Cache-Control: max-age=315360000
+```
+
+协商缓存
+
+```http
+Last-Modified / If-Modified-Since
+ETag/If-None-Match
+```
+
+
+
+缓存这里很有讲的内容 也是能够显著提升性能的地方
+
+[大公司里怎样开发和部署前端代码](https://www.zhihu.com/question/20790576/answer/32602154)
+
+[利用webpack进行持久缓存](https://github.com/happylindz/blog/issues/7)
+
+逻辑上就是，对于静态的资源，通过内容摘要算法或一些hash方案，来标记内容的唯一性和稳定性
+
+更新的时候，先资源，再文档，增量式更新
+
+
+
+### 减少重定向
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Redirections
+
+这个还是
+
+
+
+## 开发过程 项目文件
+
 
 
 
