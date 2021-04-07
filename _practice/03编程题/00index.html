@@ -425,6 +425,72 @@
           return map
         }
         // console.log(unique2(arr))
+      })
+      // 排序
+      ;(function () {
+        function swap(arr, i, j) {
+          const temp = arr[i]
+          arr[i] = arr[j]
+          arr[j] = temp
+        }
+        const numbers = [5, 2, 7, 9, 6, 1, 4, 5, 0]
+
+        function bubbleSort(arr) {
+          const newArr = Array.prototype.slice.call(arr)
+          const len = newArr.length
+          for (let i = 0; i < len - 1; i++) {
+            // 次数控制
+            for (let j = 0; j < len - i - 1; j++) {
+              newArr[j] > newArr[j + 1] && swap(newArr, j, j + 1)
+            }
+          }
+          return newArr
+        }
+
+        function quickSort(arr) {
+          const len = arr.length
+          if (len === 1 || len === 0) {
+            return arr
+          }
+          const pivot = arr[0]
+          const subArray = arr.slice(1)
+          const leftArray = subArray.filter(v => v < pivot)
+          const rightArray = subArray.filter(v => v >= pivot)
+          return [...quickSort(leftArray), pivot, ...quickSort(rightArray)]
+        }
+
+        // 选择排序
+        function sortArray(arr) {
+          const newArr = Array.prototype.slice.call(arr)
+          const len = arr.length
+          for (let i = 0; i < len; i++) {
+            // 定义有序区间 [0,i)
+            let minIndex = i
+            for (let j = i; j < len; j++) {
+              if (newArr[j] < newArr[minIndex]) {
+                minIndex = j
+              }
+            }
+            swap(newArr, i, minIndex)
+          }
+          return newArr
+        }
+
+        function insertSort(arr) {
+          const newArr = Array.prototype.slice.call(arr)
+          const len = arr.length
+          // 假设有序区间
+          // [0,i]
+          for (let i = 0; i < len; i++) {
+            let j = i + 1
+            while (j - 1 >= 0 && newArr[j - 1] > newArr[j]) {
+              swap(newArr, j, j - 1)
+              j--
+            }
+          }
+          return newArr
+        }
+        console.log(insertSort(numbers))
       })()
     </script>
   </body>

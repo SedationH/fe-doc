@@ -1,48 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Paint delay example</title>
-    <script>
-      const observer = new window.PerformanceObserver(list => {
-        list.getEntries().forEach(({ name, startTime }) => {
-          console.log({ name, startTime })
-        })
-      })
+<script>
+  const mp = new Map()
+  mp.name = 'mp'
+  mp.set(1, 2)
+  const arr = {
+    [Symbol('1')]: 'hi',
+    name: 'arr',
+    foo: null,
+    map: mp,
+  }
 
-      observer.observe({
-        entryTypes: ['paint'],
-      })
-
-      function sleep(ms = 1000) {
-        return new Promise(resolve => setTimeout(resolve, ms))
-      }
-
-      // This triggers first-paint
-      sleep().then(() => (document.body.style.backgroundColor = 'lightgrey'))
-
-      // This triggers first-contentful-paint
-      sleep(2000).then(() => (document.body.innerHTML += '<p>Hi there!</p>'))
-    </script>
-  </head>
-  <body>
-    <img
-      src="http://picbed.sedationh.cn/First-Meaningful-paint-e1588261514486.jpg"
-      alt=""
-    />
-    <script>
-      window.addEventListener('load', event => {
-        console.log('page is fully loaded')
-      })
-      window.addEventListener('DOMContentLoaded', event => {
-        console.log('DOM fully loaded and parsed')
-      })
-    </script>
-    <script>
-      // for (let i = 0; i < 1e8; i++) {
-      //   let a = 0
-      // }
-      console.log(1)
-    </script>
-  </body>
-</html>
+  console.log(JSON.stringify(arr))
+</script>

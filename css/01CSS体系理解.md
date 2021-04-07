@@ -115,6 +115,20 @@ flow-root对应产生新的FC的布局方式
 >
 > [Understanding CSS Layout And The Block Formatting Context](https://www.smashingmagazine.com/2017/12/understanding-css-layout-block-formatting-context/)
 
+说几个产生BFC的方式来体会一下
+
+- html -> inital block formatting context
+- float -> 不处于当前flow 即inside不为flow了
+- absolut fixed sticky 连FC都不属于了 维护自己的flow
+- flow-root -> block 新BFC
+- inline-block -> inline 新BFC
+
+单写个block -> block flow
+
+
+
+
+
 注意在IFC中提到的行盒 Line box
 
 在上述FC中的文档流，就是处于正常的文档流之中

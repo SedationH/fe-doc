@@ -10,6 +10,14 @@
 
 
 
+## 缓存查找～
+
+本地数据存储localStorage ... -> CacheAPI && Service Worker -> HTTP强缓存、协商缓存
+
+这个与HTTP相关度很高，后说，这部分如果强缓存get，连请求都不用发了
+
+
+
 ## DNS
 
 请求第一步，往往是DNS
@@ -167,17 +175,97 @@ ETag/If-None-Match
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Redirections
 
-这个还是
+一般用重定向的时候是有相关需求的，这个意义不大
+
+> HTTP redirects aren't the only way to define redirections. There are two others:
+>
+> 1. HTML redirections with the `<meta>` element
+> 2. JavaScript redirections via the [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)
 
 
 
 ## 开发过程 项目文件
 
+这里面要涉及的考虑比较多
+
+分别重编码和构建进行梳理
+
+
+
+### 编码方面
+
+[参考](https://github.com/berwin/Blog/issues/23)
+
+- JS运行优化
+  - 数据读取
+  - DOM
+  - 流程控制
+  - 减少JS操作DOM而产生的reflow repaint 尽量利用Composite
+  - 长计算任务拆解，分散到各个帧中去执行
+  - debounce throttle
+  - web worker...
+
+- 文件按需引入
+  - 组件可以
+  - css也可以
+    - 媒体查询
+    - 谨慎使用@import Chrome对js中link引入的外表内容有并行下载优化
+  - 图片也可以按需加载 
+  - polifill按需引入
+
+- 注意文档内容组织，js可以操作DOM && CSSOM，所以可能产生相关阻塞
+
+  - > JavaScript 会阻塞 DOM 构建，而 CSSOM 的构建又回阻塞 JavaScript 的执行。所以这就是为什么在优化的最佳实践中，我们基本都推荐把 CSS 样式表放在 `<head>` 之中（即页面的头部），把 JavaScript 脚本放在 `<body>` 的最后（即页面的尾部）。
+
+  - script上 defer or async
+
+
+
+### 构建
+
+构建就是尽可能的压缩和去除不需要代码
+
+通过构建工具🔧 各种xxx uglify
+
+Tree Shaking
+
+
+
+图片和一些其他文件也是在保证能用的情况下尽量压缩
+
+[图片是流量大头 这里重点提一嘴](https://zhuanlan.zhihu.com/p/98683679)
+
+
+
+## 页面展现在你的眼前👀啦 🎉
+
+OKK
 
 
 
 
-## Paint
+
+## 💡想法
+
+文章开始想着通过URL到页面的这个路径去思考如何优化就好了，但却发现每一步都还要好多东西要去做
+
+上面仅仅说的还是页面加载的这个视角，有些内容限于自身理解没到位，就没往上写，除此之外，还有我们开发，维护，监控测试还有一系列自动化的角度。需要去学习的还有很多。
+
+文末附在探索路径上帮到我的文章，感谢😊
+
+- [嗨，送你一张Web性能优化地图](https://github.com/berwin/Blog/issues/23#) 
+- [前端性能优化-加载篇](https://www.cxymsg.com/guide/load.html)
+- [前端性能优化之旅](https://alienzhou.github.io/fe-performance-journey/) web-highlighter就和作者相遇，太奇妙了。。。
+- [Chrome web developers](https://developers.google.com/web/fundamentals/performance/get-started) 还需要慢慢看～
+- ...各种碎碎的知识点
+
+
+
+
+
+## 其他
+
+### Paint
 
 Paint是一个很有趣的点，这里对CSS3在渲染上是如何优化的，很有帮助～
 
@@ -190,4 +278,14 @@ https://developers.google.com/web/fundamentals/performance/rendering
 从paint的角度来理解 will-change是如何起作用的～
 
 https://www.youtube.com/watch?v=8-pkB2vGUKk
+
+
+
+### 在单页面的开发模式下
+
+JS是很多时候的加载大头
+
+加个loading感觉会让用户舒服很多～
+
+![2019-06-23-12-20-14](http://picbed.sedationh.cn/d3ca5a9ee75428bc53d8751caabdc19e.png)
 
