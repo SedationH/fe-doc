@@ -116,25 +116,6 @@
         }
         console.log(clone2(obj))
       })
-      // curry
-      ;(function () {
-        function curry(fn) {
-          const len = fn.length
-          return function curriedFn(...args) {
-            if (args.length < len) {
-              return (...innerArgs) => curriedAdd(...[...args, ...innerArgs])
-            }
-            return fn(...args)
-          }
-        }
-        function add(a, b, c) {
-          console.log(a + b + c)
-        }
-        const curriedAdd = curry(add)
-        curriedAdd(1)(2, 3)
-        curriedAdd(1, 2, 3)
-        curriedAdd(1)(2)(3)
-      })
       // 大数相加
       ;(function () {
         /**
@@ -380,7 +361,7 @@
           }
         }
         // $body.addEventListener(
-        //   'mousemove',
+        //   'mousemove',dasdbobhjibasd
         //   throttle2(handleBodyMouseMove, 1000)
         // )
       })
@@ -491,6 +472,40 @@
           return newArr
         }
         console.log(insertSort(numbers))
+      })
+      // 洗牌算法
+      ;(function () {
+        function shuffle1(arr) {
+          const ans = []
+          while (arr.length) {
+            const randomIndex = Number.parseInt(Math.random() * arr.length)
+            // 这一步可以优化
+            ans.push(arr.splice(randomIndex, 1)[0])
+          }
+          return ans
+        }
+        function shuffle2(arr) {
+          let p = arr.length
+          // 定义无序区间 [p,arr.length)
+          while (p > 0) {
+            // 坐标[0,p)
+            const randomIndex = Number.parseInt(Math.random() * p)
+            // 随机一个元素和最后一个元素
+            swap(arr, randomIndex, p - 1)
+            p--
+          }
+          return arr
+
+          function swap(arr, i, j) {
+            const temp = arr[i]
+            arr[i] = arr[j]
+            arr[j] = temp
+          }
+        }
+
+        // sort
+
+        console.log(shuffle2([2, 3, 6, 2, 6, 2]))
       })()
     </script>
   </body>

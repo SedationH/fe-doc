@@ -20,8 +20,10 @@ Transimition Control Protocol
 
 - It is a connection-oriented protocol. 
   - 需要三次握手和四次挥手的链接建立与消除工作
-- 保证不丢失（可靠，确认收到） 
-- 滑动窗口算法下的拥塞控制
+- 可靠性
+  - 有状态
+  - 可控制，根据状态进行控制
+- 面向字节流，无可维护状态
 
 TCP的报文长度是根据接收双方给出的窗口值和当前网络的拥塞程度来决定的
 
@@ -33,7 +35,7 @@ User Datagram Protocol
 
 
 
-## 三次握手🤝 三次挥手🙋
+## 三次握手🤝 四次挥手🙋
 
 https://juejin.cn/post/6844903958624878606#heading-1
 
@@ -63,13 +65,14 @@ S 专注于处理数据
 
 1. GET 请求服务器的资源
    1. 无副作用 幂等 在强调服务器所有的资源数量是否改变
-2. OPTIONS 获取目录资源所支持的通讯选项
-3. POST 向服务器发送数据
-4. PUT 新增资源 修改资源
+2. HEAD 资源元信息
+3. OPTIONS 获取目录资源所支持的通讯选项
+4. POST 向服务器发送数据
+5. PUT 新增资源 修改资源
    1. 相对于POST 通常用于单一资源，覆盖式修改
-5. PATCH 对资源进行部分修改
+6. PATCH 对资源进行部分修改
    1. 单一资源 局部更新
-6. TRACE 显示服务器收到的请求，用于测试
+7. TRACE 显示服务器收到的请求，用于测试
 
 
 
@@ -131,7 +134,6 @@ S 专注于处理数据
   - 304 协商缓存成功～
 - **4xx**: 客户端错误
   - 400 报文有语法错误
-  - 401 unauthorized 未认证
   - 403 服务器拒绝
   - 404 没找到
 - **5xx**: 服务器端发生错误。
@@ -186,3 +188,23 @@ Three
 
 ![Compares the performance of the three HTTP/1.x connection models: short-lived connections, persistent connections, and HTTP pipelining.](http://picbed.sedationh.cn/http1_x_connections.png)
 
+
+
+## 编码
+
+```
+Content-Encoding: gzip
+Content-Encoding: compress
+Content-Encoding: deflate
+Content-Encoding: br
+
+
+// Multiple, in the order in which they were applied
+Content-Encoding: deflate, gzip
+```
+
+
+
+```
+Transfer-Encoding: gzip, chunked
+```

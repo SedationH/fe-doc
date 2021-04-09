@@ -44,3 +44,33 @@ chrome维护失效集合，表示某些样式变动后会影响哪些元素，�
 2. **尽量避免`:not`选择器**。
 3. **避免使用兄弟元素选择器**。
 
+
+
+## GPU
+
+https://zhuanlan.zhihu.com/p/88288584
+
+https://www.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome
+
+传统的浏览器架构完全依赖CPU去渲染页面内容，而现代浏览器采用GPU合成的方式去呈现网页内容。
+
+
+
+`transform`是如何让动画不会导致重绘的呢？最直接的答案就是`transform`会直接使用硬件加速，在`GPU`中运行，绕开了软件渲染。
+
+
+
+- 频繁重绘的区域可以利用硬件加速；
+- 但也要避免滥用硬件加速创建过多合成层，占用过多内存，影响性能；
+- 避免隐式创建的合成层造成层爆炸；
+- 避免使用gif（可以使用video代替；
+
+
+
+一些需要高出来层的情景
+
+- z-index 层叠场景
+- transform
+- opcity filert
+- 动画效果 animation
+

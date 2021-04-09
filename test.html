@@ -1,13 +1,17 @@
 <script>
-  const mp = new Map()
-  mp.name = 'mp'
-  mp.set(1, 2)
-  const arr = {
-    [Symbol('1')]: 'hi',
-    name: 'arr',
-    foo: null,
-    map: mp,
+  function Animal(name) {
+    this.name = name
+  }
+  Animal.prototype.speak = function () {
+    console.log(this.name + ' makes a noise.')
   }
 
-  console.log(JSON.stringify(arr))
+  class Dog extends Animal {
+    speak() {
+      console.log(this.name + ' barks.')
+    }
+  }
+
+  var d = new Dog('Mitzie')
+  d.speak() //Mitzie makes a noise.  Mitzie barks.
 </script>
