@@ -39,7 +39,10 @@ User Datagram Protocol
 
 https://juejin.cn/post/6844903958624878606#heading-1
 
+那，照这样说一个 MSL 不就不够了吗，为什么要等待 2 MSL?
 
+- 1 个 MSL 确保四次挥手中主动关闭方最后的 ACK 报文最终能达到对端
+- 1 个 MSL 确保对端没有收到 ACK 重传的 FIN 报文可以到达
 
 ## HTTP是啥
 

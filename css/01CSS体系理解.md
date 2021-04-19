@@ -33,6 +33,17 @@ User agent就是我们的查看媒介，连续媒体，分页媒体，而 Virtua
 - Relationships between elements in the document tree.
 - External information (e.g., viewport size, intrinsic dimensions of images, etc.).
 
+
+
+- 自身盒子的特点和值
+- 周围盒子
+- 处于什么样的FC
+- position scheme
+  - default current FC flow
+  - float
+  - absolute
+- viewport 自己的（图）
+
 需要特别说的是
 
 对于 In continuous media, the [viewport](https://developer.mozilla.org/en-US/docs/Glossary/Viewport) is the viewing area of the browser window. 
@@ -157,6 +168,31 @@ As mentioned above, when an element is floated, it is taken out of the normal fl
 定位依据是nearest positioned ancestor(not static)，一直拿不到的话，就用html 这个 IFC
 
 这里需要提一下[containing block](https://www.w3.org/TR/CSS2/visudet.html#containing-block-details) 对理解Position有很关键的影响
+
+>
+>
+>1. The containing block in which the [root element](https://www.w3.org/TR/CSS2/conform.html#root) lives is a rectangle called the initial containing block. For continuous media, it has the dimensions of the [viewport](https://www.w3.org/TR/CSS2/visuren.html#viewport) and is anchored at the canvas origin; it is the [page area](https://www.w3.org/TR/CSS2/page.html#page-area) for paged media. The 'direction' property of the initial containing block is the same as for the root element.
+>
+>2. For other elements, if the element's position is 'relative' or 'static', the containing block is formed by the content edge of the nearest [block container](https://www.w3.org/TR/CSS2/visuren.html#block-boxes) ancestor box.
+>
+>3. If the element has 'position: fixed', the containing block is established by the [viewport](https://www.w3.org/TR/CSS2/visuren.html#viewport) in the case of continuous media or the page area in the case of paged media.
+>
+>4. If the element has 'position: absolute', the containing block is established by the nearest ancestor with a
+>
+>    
+>
+>   'position'
+>
+>    
+>
+>   of 'absolute', 'relative' or 'fixed', in the following way:
+>
+>   1. In the case that the ancestor is an inline element, the containing block is the bounding box around the padding boxes of the first and the last inline boxes generated for that element. In CSS 2.1, if the inline element is split across multiple lines, the containing block is undefined.
+>   2. Otherwise, the containing block is formed by the [padding edge](https://www.w3.org/TR/CSS2/box.html#padding-edge) of the ancestor.
+>
+>   ![Image illustrating the relationship between content, padding, borders, and margins.](https://www.w3.org/TR/CSS2/images/boxdim.png)
+
+
 
 > absolute : 
 >

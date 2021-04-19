@@ -1,3 +1,5 @@
+https://tech.meituan.com/2018/10/11/fe-security-csrf.html
+
 ## CSRF Corss-site request forgery
 
 **XSS** 利用的是用户对指定网站的信任，CSRF 利用的是网站对用户网页浏览器的信任。
@@ -34,10 +36,11 @@ CSRF的两个特点：
 
 How
 
-- 同源检测
-  - SameSite
+- CSRF自动防御策略：同源检测（Origin 和 Referer 验证）。
 
+- CSRF主动防御措施：Token验证 或者 双重Cookie验证 以及配合Samesite Cookie。
 
+  
 
 ## Samesite Cookie属性
 
@@ -45,3 +48,5 @@ Google起草了一份草案来改进HTTP协议，那就是为Set-Cookie响应头
 
 - Samesite=Strict: 这种称为严格模式，表明这个 Cookie 在任何情况下都不可能作为第三方 Cookie
 - Samesite=Lax: 这种称为宽松模式，比 Strict 放宽了点限制,假如这个请求是这种请求且同时是个GET请求，则这个Cookie可以作为第三方Cookie
+
+还不支持子域

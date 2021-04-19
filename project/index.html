@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Project</title>
+  </head>
+  <body>
+    <pre>
+整体结构为
+1
+- 2
+- 2
+- - 3
+1
+</pre
+    >
+    <article>
+      <h1>This is the first H1</h1>
+      <section>我们来说一些内容</section>
+      <h2>first H1's H2</h2>
+      <h2>second H2</h2>
+      <h3>this is h3</h3>
+      <section>
+        Chrome's official site to help you stay up to date on
+        everything Chrome related, build Extensions, publish on the
+        Chrome Web Store, optimize your website, and more.
+      </section>
+      <h1>second H1</h1>
+      <section>换一些内容</section>
+    </article>
+
+    <script>
+      /**
+       * 目的 形成
+       * [
+       *  {
+       *    xxx,
+       *    children: [
+       *      {
+       *         xxx
+       *      }
+       *    ]
+       *  }
+       * 的层级嵌套结构
+       * ]
+       */
+      const options = {
+        headingSelector: 'h1,h2,h3',
+        contentSelector: 'article',
+      }
+
+      function getHeadings(options) {
+        const headings = document
+          .querySelector(options.contentSelector)
+          .querySelectorAll(options.headingSelector)
+        return headings
+      }
+
+      function getHeadingObject(heading) {
+        const type = heading.tagName
+
+        return {
+          el: heading,
+          type,
+          level: Number(type.slice(1)),
+          children: [],
+        }
+      }
+
+      // 向 nestedHeadings 加入 headingObject
+      // 要能加入应该处于的位置
+      function addNode(nestedHeadings, headingObject) {
+        let children = nestedHeadings
+        let lastHeadingObject = children[children.length - 1]
+        // 定位到所在层 拿到相应的children
+        while (
+          lastHeadingObject &&
+          lastHeadingObject.type !== headingObject.type
+        ) {
+          // 寻找下一层
+          children = lastHeadingObject.children
+          lastHeadingObject = children[children.length - 1]
+        }
+        // 跳出循环的时候
+        //  1. lastHeadingObject === undefined
+        //  2. lastHeadingObject.type === headingObject.type
+        children.push(headingObject)
+        return nestedHeadings
+      }
+
+      function getNestedHeadings(headings) {
+        headings = Array.from(headings)
+        return headings.reduce((prev, heading) => {
+          const headingObject = getHeadingObject(heading)
+          return addNode(prev, headingObject)
+        }, [])
+      }
+
+      const headings = getHeadings(options)
+      const nestedHeadings = getNestedHeadings(headings)
+
+      void 1
+    </script>
+  </body>
+</html>

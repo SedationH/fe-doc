@@ -1,17 +1,37 @@
 <script>
-  function Animal(name) {
-    this.name = name
+  const async1 = async () => {
+    console.log('第一个async函数开始')
+    await async2()
+    console.log('第一个async函数结束')
   }
-  Animal.prototype.speak = function () {
-    console.log(this.name + ' makes a noise.')
+  const async2 = async () => {
+    console.log('第二个async函数执行')
   }
 
-  class Dog extends Animal {
-    speak() {
-      console.log(this.name + ' barks.')
+  console.log('开始执行')
+  setTimeout(() => {
+    console.log('setTimeout执行')
+  }, 0)
+  new Promise(resolve => {
+    console.log('promise执行')
+    for (var i = 0; i < 100; i++) {
+      i == 99 && resolve()
     }
-  }
-
-  var d = new Dog('Mitzie')
-  d.speak() //Mitzie makes a noise.  Mitzie barks.
+  }).then(() => {
+    console.log('执行then函数')
+  })
+  async1()
+  console.log('结束')
 </script>
+task setTimeout执行
+micro 执行then函数 第一个async函数结束
+
+ans
+开始执行
+promise执行
+第一个async函数开始
+第二个async函数执行
+结束
+执行then函数
+第一个async函数结束
+setTimeout执行
