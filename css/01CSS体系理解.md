@@ -240,6 +240,56 @@ The **stacking context** is a three-dimensional conceptualization of HTML elemen
 - Element with a [`position`](https://developer.mozilla.org/en-US/docs/Web/CSS/position) value `fixed` or `sticky` (sticky for all mobile browsers, but not older desktop).
 - Element that is a child of a [flex](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox) container, with [`z-index`](https://developer.mozilla.org/en-US/docs/Web/CSS/z-index) value other than `auto`.
 
+```html
+<div class="wraper">
+  <div class="left r">
+    <div class="c1"></div>
+  </div>
+  <div class="right r">
+    <div class="c2"></div>
+  </div>
+</div>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  .wraper {
+    display: flex;
+  }
+  .r {
+    position: relative;
+    height: 200px;
+    width: 50vw;
+  }
+
+  .c1 {
+    position: absolute;
+    width: 120%;
+    height: 20px;
+    background-color: pink;
+  }
+
+  .c2 {
+    position: absolute;
+    width: 10px;
+    height: 100px;
+    background-color: yellow;
+    z-index: 20;
+  }
+
+  .left {
+    z-index: 2;
+  }
+  .right {
+    z-index: 1;
+  }
+</style>
+
+```
+
 
 
 这里例子简单易懂

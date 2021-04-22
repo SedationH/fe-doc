@@ -2,6 +2,16 @@ https://github.com/SedationH/vue-interview
 
 
 
+面试题目
+
+https://juejin.cn/post/6844903918753808398#heading-6
+
+修正
+
+spa的回答对浏览器的交互也是有拦截的
+
+
+
 ## v-if && v-for 优先级
 
 文档指出不要把v-if 和 v-for同时用在一个元素上

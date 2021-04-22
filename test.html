@@ -1,37 +1,36 @@
 <script>
-  const async1 = async () => {
-    console.log('第一个async函数开始')
-    await async2()
-    console.log('第一个async函数结束')
-  }
-  const async2 = async () => {
-    console.log('第二个async函数执行')
-  }
-
-  console.log('开始执行')
-  setTimeout(() => {
-    console.log('setTimeout执行')
-  }, 0)
-  new Promise(resolve => {
-    console.log('promise执行')
-    for (var i = 0; i < 100; i++) {
-      i == 99 && resolve()
+  // url: http://www.baidu.com:80/home/index.html?name=foo&age=1#name
+  /**
+   * @param url{string}
+   */
+  const url =
+    'http://www.baidu.com:80/home/index.html?name=foo&age=1#name'
+  function handleUrl(url) {
+    const len = url.length
+    const urlObj = {
+      protocol: '',
+      domin: '',
+      prot: '',
+      path: '',
+      query: '',
+      hash: '',
     }
-  }).then(() => {
-    console.log('执行then函数')
-  })
-  async1()
-  console.log('结束')
-</script>
-task setTimeout执行
-micro 执行then函数 第一个async函数结束
+    // 定位到 protocol
+    let protocolIndex = url.indexOf('://')
+    if (protocolIndex !== -1) {
+      urlObj.protocol = url.slice(0, protocolIndex)
+    }
+    // 定位到domin & prot
+    let dominStart
+    if (protocolIndex === -1) {
+      dominStart = 0
+    } else {
+      dominStart = protocolIndex + 3
+    }
+    const dominEndIndex = url.indexOf('/', dominStart)
+    urlObj.domin = url.slice(dominStart, dominEndIndex)
 
-ans
-开始执行
-promise执行
-第一个async函数开始
-第二个async函数执行
-结束
-执行then函数
-第一个async函数结束
-setTimeout执行
+    void 1
+  }
+  handleUrl(url)
+</script>

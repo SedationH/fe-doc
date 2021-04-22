@@ -1,3 +1,44 @@
+## 分析逻辑
+
+拦截默认行为，控制页面显示
+
+有哪些页面行为？
+
+- 浏览器bower上的前进后退点击操作
+- history相关api
+  - go back pushState
+- link
+- hash
+
+浏览器有相关的事件机制来拿到行为变化
+
+Event:
+
+- hasChange
+- popState
+
+
+
+如何控制页面显示？
+
+url -> Page
+
+```vue
+<component :is="xxx"> <component>
+```
+
+建立起 map 
+
+url : pageComponent的映射关系
+
+
+
+值得一提的是 Just calling `history.pushState()` or `history.replaceState()`won't trigger a `popstate` event. 
+
+这里需要额外处理下映射变动
+
+
+
 ## 实现原理
 
 阻止默认的链接跳转，利用HTML5 History API来建立一个客户端的router
@@ -140,9 +181,3 @@ export default {
 }
 </script>
 ```
-
-
-
-## 插件相关
-
-TODO

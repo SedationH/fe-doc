@@ -1,4 +1,4 @@
-参考
+http://picbed.sedationh.cn/ScreenFlow.gif参考
 
 https://juejin.cn/book/6844733763675488269/section/6844733763788767239
 
@@ -23,7 +23,6 @@ Transimition Control Protocol
 - 可靠性
   - 有状态
   - 可控制，根据状态进行控制
-- 面向字节流，无可维护状态
 
 TCP的报文长度是根据接收双方给出的窗口值和当前网络的拥塞程度来决定的
 
@@ -32,6 +31,35 @@ User Datagram Protocol
 - 无连接
 - TCP有的我没有
 - 快
+
+![image.png](http://picbed.sedationh.cn/5ffda420396b4e7990f0264b6d82347d~tplv-k3u1fbpfcp-watermark.image)
+
+
+
+## WebSocket
+
+提供服务端和客户端的双向通讯能力
+
+双方都提供 on emit 方法
+
+基于tcp / http
+
+报文关键字段
+
+https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers#client_handshake_request
+
+```http
+  GET /chat HTTP/1.1
+  Host: example.com:8000
++ Upgrade: websocket
++ Connection: Upgrade
+  Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==
+  Sec-WebSocket-Version: 13
+```
+
+The **client** will send a pretty standard HTTP request with headers that looks like this (the HTTP version **must** be 1.1 or greater, and the method **must** be `GET`)
+
+
 
 
 
@@ -68,7 +96,7 @@ S 专注于处理数据
 
 1. GET 请求服务器的资源
    1. 无副作用 幂等 在强调服务器所有的资源数量是否改变
-2. HEAD 资源元信息
+2. HEAD 资源元信息 无实体
 3. OPTIONS 获取目录资源所支持的通讯选项
 4. POST 向服务器发送数据
 5. PUT 新增资源 修改资源
@@ -129,7 +157,7 @@ S 专注于处理数据
 
 ## HTTP状态码
 
-- **1xx**: 表示目前是协议处理的中间状态，还需要后续操作。
+- **1xx**: 表示目前是协议处理的中间状态，还需要后续操作。（POST 两次请求）
 - **2xx**: 表示成功状态。
 - **3xx**: 重定向状态，资源位置发生变动，需要重新请求。
   - 301 Moved Permanently
@@ -193,7 +221,7 @@ Three
 
 
 
-## 编码
+## 编码 & 优化传输
 
 ```
 Content-Encoding: gzip
