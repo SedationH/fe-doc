@@ -26,3 +26,65 @@ The operands are compared using the [Abstract Relational Comparison](https://tc3
 - If either value is `NaN`, the operator returns `false`.
 - Otherwise the values are compared as numeric values.
 
+
+
+
+
+```js
+const toString = Object.prototype.toString;
+
+toString.call(new Date);    // [object Date]
+toString.call(new String);  // [object String]
+toString.call(Math);        // [object Math]
+
+// Since JavaScript 1.8.5
+toString.call(undefined);   // [object Undefined]
+toString.call(null);        // [object Null]
+```
+
+还有一些比较有用的数据类型判断函数
+
+https://zhuanlan.zhihu.com/p/129642585
+
+- Array.isArray
+
+- global isNaN
+
+- Number.isNaN
+- Object.is 可用于NaN
+
+![image-20200505173853415](/Users/sedationh/Library/Application Support/typora-user-images/image-20200505173853415.png)
+
+## Q
+
+```js
+<script>
+  const toString = Object.prototype.toString
+  function Foo() {}
+  Foo.prototype[Symbol.toStringTag] = 'Foo'
+  Foo[Symbol.hasInstance] = function (ins) {
+    console.log(1)
+    return false
+  }
+
+  class Array1 {
+    static [Symbol.hasInstance](instance) {
+      console.log(1123)
+      return Array.isArray(instance)
+    }
+  }
+
+  console.log(1 instanceof Array1)
+
+  const f1 = new Foo()
+  console.log(toString.call(f1))
+
+  console.log(f1 instanceof Foo)
+</script>
+
+```
+
+这里的 hasInstance不知道如何处理的
+
+不l理解babel是如何处理static的
+

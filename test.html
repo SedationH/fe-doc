@@ -1,36 +1,27 @@
 <script>
-  // url: http://www.baidu.com:80/home/index.html?name=foo&age=1#name
-  /**
-   * @param url{string}
-   */
   const url =
-    'http://www.baidu.com:80/home/index.html?name=foo&age=1#name'
-  function handleUrl(url) {
-    const len = url.length
-    const urlObj = {
-      protocol: '',
-      domin: '',
-      prot: '',
-      path: '',
-      query: '',
-      hash: '',
-    }
-    // 定位到 protocol
-    let protocolIndex = url.indexOf('://')
-    if (protocolIndex !== -1) {
-      urlObj.protocol = url.slice(0, protocolIndex)
-    }
-    // 定位到domin & prot
-    let dominStart
-    if (protocolIndex === -1) {
-      dominStart = 0
-    } else {
-      dominStart = protocolIndex + 3
-    }
-    const dominEndIndex = url.indexOf('/', dominStart)
-    urlObj.domin = url.slice(dominStart, dominEndIndex)
+    'https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLAnchorElement?姓名=胡晨曦&age=2#browser_compatibility'
 
-    void 1
+  function parseUrl(url) {
+    const dummyNode = document.createElement('a')
+    dummyNode.href = url
+    return parseSearch(dummyNode.search)
   }
-  handleUrl(url)
+
+  function parseSearch(serch) {
+    if (serch.indexOf('?') == -1) return {}
+    serch = serch.slice(1)
+    const keyAndValueArr = serch.split('&')
+    return keyAndValueArr.reduce((prev, curr) => {
+      let [key, value] = curr.split('=')
+      key = decodeURIComponent(key)
+      value = decodeURIComponent(value)
+
+      return Object.assign(prev, {
+        [key]: value,
+      })
+    }, {})
+  }
+
+  console.log(parseUrl(url))
 </script>
