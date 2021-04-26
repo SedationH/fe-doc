@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
     <title>Document</title>
     <style>
       html,
@@ -218,7 +221,9 @@
          */
         function flat2(arr) {
           return arr.reduce((prev, curr) => {
-            return prev.concat(Array.isArray(curr) ? flat2(curr) : curr)
+            return prev.concat(
+              Array.isArray(curr) ? flat2(curr) : curr
+            )
           }, [])
         }
 
@@ -301,7 +306,7 @@
 
         function debounce2(fn, wait, immediate) {
           let timer
-          return function debouncedFn(...args) {
+          function debouncedFn(...args) {
             if (timer) {
               clearTimeout(timer)
             }
@@ -324,6 +329,8 @@
             clearTimeout(timer)
             timer = undefined
           }
+
+          return debouncedFn
         }
         $body.addEventListener(
           'mousemove',
@@ -370,7 +377,20 @@
         // 要考虑的问题
         // 如何判断是重复的？ 简单来说 === 就完事了
         // 1. 两层for
-        const arr = [1, 2, 3, {}, [], {}, [], undefined, undefined, NaN, NaN]
+        const arr = [
+          1,
+          '1',
+          2,
+          3,
+          {},
+          [],
+          {},
+          [],
+          undefined,
+          undefined,
+          NaN,
+          NaN,
+        ]
         function unique1(arr) {
           const len = arr.length
           const ans = []
@@ -387,7 +407,7 @@
           return ans
         }
 
-        console.log(unique1(arr)) // 仅仅依赖 === 来判断并不可靠
+        console.log(1, unique1(arr)) // 仅仅依赖 === 来判断并不可靠
 
         // 但不同的需求下
         // “1” && 1是重复的吗？
@@ -398,6 +418,8 @@
           return [...new Set(arr)]
         }
 
+        console.log(2, unique2(arr))
+
         function unique3(arr) {
           const map = {}
           arr.filter(item =>
@@ -406,7 +428,7 @@
           return map
         }
         // console.log(unique2(arr))
-      })
+      })()
       // 排序
       ;(function () {
         function swap(arr, i, j) {
@@ -437,7 +459,11 @@
           const subArray = arr.slice(1)
           const leftArray = subArray.filter(v => v < pivot)
           const rightArray = subArray.filter(v => v >= pivot)
-          return [...quickSort(leftArray), pivot, ...quickSort(rightArray)]
+          return [
+            ...quickSort(leftArray),
+            pivot,
+            ...quickSort(rightArray),
+          ]
         }
 
         // 选择排序
@@ -478,7 +504,9 @@
         function shuffle1(arr) {
           const ans = []
           while (arr.length) {
-            const randomIndex = Number.parseInt(Math.random() * arr.length)
+            const randomIndex = Number.parseInt(
+              Math.random() * arr.length
+            )
             // 这一步可以优化
             ans.push(arr.splice(randomIndex, 1)[0])
           }
