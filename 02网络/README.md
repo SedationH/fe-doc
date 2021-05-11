@@ -192,8 +192,6 @@ Connection: close
 
 这里涉及到一些安全问题
 
-TODO
-
 
 
 ## HTTP2 较于 HTTP1.x有什么优势和特点

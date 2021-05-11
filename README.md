@@ -8,4 +8,8 @@
 
 ## 收录优秀的类似仓库 or site
 
-http://www.conardli.top/blog/
+- http://www.conardli.top/blog/ FE
+
+- https://www.pdai.tech/ Full Stack
+
+- https://www.yuque.com/sulirc?tab=books FE
